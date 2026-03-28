@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PORTECOS ACADEMIC IA — Relógio Mundial</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="header-inner">
+      <span class="brand-emoji">🌍</span>
+      <div class="brand-text">
+        <h1>PORTECOS ACADEMIC IA</h1>
+        <p class="subtitle">Relógio Mundial</p>
+      </div>
+      <!-- 12h / 24h toggle button -->
+      <button id="toggleFormat" class="toggle-btn" aria-label="Alternar formato 12h/24h">
+        <span id="toggleLabel">24h</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main>
+    <!-- Primary clock — Luanda, Angola -->
+    <section class="primary-clock-wrapper">
+      <div class="clock-card primary" data-timezone="Africa/Luanda" data-label="Luanda, Angola" data-flag="🇦🇴" data-abbr="WAT">
+        <div class="card-flag">🇦🇴</div>
+        <div class="card-city">Luanda, Angola</div>
+        <div class="card-time" aria-live="polite">--:--:--</div>
+        <div class="card-ampm"></div>
+        <div class="card-date">---</div>
+        <div class="card-tz">WAT</div>
+      </div>
+    </section>
+
+    <!-- Secondary clocks grid -->
+    <section class="clocks-grid">
+
+      <div class="clock-card" data-timezone="Europe/Lisbon" data-label="Lisboa, Portugal" data-flag="🇵🇹" data-abbr="WET">
+        <div class="card-flag">🇵🇹</div>
+        <div class="card-city">Lisboa, Portugal</div>
+        <div class="card-time" aria-live="polite">--:--:--</div>
+        <div class="card-ampm"></div>
+        <div class="card-date">---</div>
+        <div class="card-tz">WET</div>
+      </div>
+
+      <div class="clock-card" data-timezone="America/Sao_Paulo" data-label="São Paulo, Brasil" data-flag="🇧🇷" data-abbr="BRT">
+        <div class="card-flag">🇧🇷</div>
+        <div class="card-city">São Paulo, Brasil</div>
+        <div class="card-time" aria-live="polite">--:--:--</div>
+        <div class="card-ampm"></div>
+        <div class="card-date">---</div>
+        <div class="card-tz">BRT</div>
+      </div>
+
+      <div class="clock-card" data-timezone="America/New_York" data-label="New York, USA" data-flag="🇺🇸" data-abbr="EST">
+        <div class="card-flag">🇺🇸</div>
+        <div class="card-city">New York, USA</div>
+        <div class="card-time" aria-live="polite">--:--:--</div>
+        <div class="card-ampm"></div>
+        <div class="card-date">---</div>
+        <div class="card-tz">EST</div>
+      </div>
+
+      <div class="clock-card" data-timezone="Europe/London" data-label="London, UK" data-flag="🇬🇧" data-abbr="GMT">
+        <div class="card-flag">🇬🇧</div>
+        <div class="card-city">London, UK</div>
+        <div class="card-time" aria-live="polite">--:--:--</div>
+        <div class="card-ampm"></div>
+        <div class="card-date">---</div>
+        <div class="card-tz">GMT</div>
+      </div>
+
+      <div class="clock-card" data-timezone="Asia/Dubai" data-label="Dubai, UAE" data-flag="🇦🇪" data-abbr="GST">
+        <div class="card-flag">🇦🇪</div>
+        <div class="card-city">Dubai, UAE</div>
+        <div class="card-time" aria-live="polite">--:--:--</div>
+        <div class="card-ampm"></div>
+        <div class="card-date">---</div>
+        <div class="card-tz">GST</div>
+      </div>
+
+      <div class="clock-card" data-timezone="Asia/Tokyo" data-label="Tokyo, Japan" data-flag="🇯🇵" data-abbr="JST">
+        <div class="card-flag">🇯🇵</div>
+        <div class="card-city">Tokyo, Japan</div>
+        <div class="card-time" aria-live="polite">--:--:--</div>
+        <div class="card-ampm"></div>
+        <div class="card-date">---</div>
+        <div class="card-tz">JST</div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <p>&copy; 2026 PORTECOS ACADEMIC IA — Plataforma de formação técnica com IA para o mercado angolano lusófono</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
