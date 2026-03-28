@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Relógio Mundial — PORTECOS ACADEMIC IA</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ======= HEADER ======= -->
+  <header class="site-header">
+    <div class="header-inner">
+      <h1 class="brand">🌍 PORTECOS ACADEMIC IA</h1>
+      <p class="subtitle">Relógio Mundial</p>
+      <button id="toggleFormat" class="btn-toggle" aria-label="Alternar formato de hora">
+        🕐 <span id="toggleLabel">Mudar para 12h</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ======= MAIN GRID ======= -->
+  <main class="clock-grid">
+
+    <!-- Primary clock — Luanda -->
+    <article class="clock-card primary" id="clock-luanda" aria-label="Relógio de Luanda">
+      <div class="card-flag">🇦🇴</div>
+      <h2 class="card-city">Luanda</h2>
+      <p class="card-country">Angola</p>
+      <div class="card-time" id="time-luanda">--:--:--</div>
+      <div class="card-ampm" id="ampm-luanda"></div>
+      <div class="card-date" id="date-luanda">--/--/----</div>
+      <div class="card-tz" id="tz-luanda">WAT</div>
+    </article>
+
+    <!-- Secondary clocks -->
+    <article class="clock-card" id="clock-lisbon" aria-label="Relógio de Lisboa">
+      <div class="card-flag">🇵🇹</div>
+      <h2 class="card-city">Lisboa</h2>
+      <p class="card-country">Portugal</p>
+      <div class="card-time" id="time-lisbon">--:--:--</div>
+      <div class="card-ampm" id="ampm-lisbon"></div>
+      <div class="card-date" id="date-lisbon">--/--/----</div>
+      <div class="card-tz" id="tz-lisbon">WET</div>
+    </article>
+
+    <article class="clock-card" id="clock-saopaulo" aria-label="Relógio de São Paulo">
+      <div class="card-flag">🇧🇷</div>
+      <h2 class="card-city">São Paulo</h2>
+      <p class="card-country">Brasil</p>
+      <div class="card-time" id="time-saopaulo">--:--:--</div>
+      <div class="card-ampm" id="ampm-saopaulo"></div>
+      <div class="card-date" id="date-saopaulo">--/--/----</div>
+      <div class="card-tz" id="tz-saopaulo">BRT</div>
+    </article>
+
+    <article class="clock-card" id="clock-newyork" aria-label="Relógio de Nova Iorque">
+      <div class="card-flag">🇺🇸</div>
+      <h2 class="card-city">Nova Iorque</h2>
+      <p class="card-country">EUA</p>
+      <div class="card-time" id="time-newyork">--:--:--</div>
+      <div class="card-ampm" id="ampm-newyork"></div>
+      <div class="card-date" id="date-newyork">--/--/----</div>
+      <div class="card-tz" id="tz-newyork">EST</div>
+    </article>
+
+    <article class="clock-card" id="clock-london" aria-label="Relógio de Londres">
+      <div class="card-flag">🇬🇧</div>
+      <h2 class="card-city">Londres</h2>
+      <p class="card-country">Reino Unido</p>
+      <div class="card-time" id="time-london">--:--:--</div>
+      <div class="card-ampm" id="ampm-london"></div>
+      <div class="card-date" id="date-london">--/--/----</div>
+      <div class="card-tz" id="tz-london">GMT</div>
+    </article>
+
+    <article class="clock-card" id="clock-dubai" aria-label="Relógio de Dubai">
+      <div class="card-flag">🇦🇪</div>
+      <h2 class="card-city">Dubai</h2>
+      <p class="card-country">Emirados Árabes</p>
+      <div class="card-time" id="time-dubai">--:--:--</div>
+      <div class="card-ampm" id="ampm-dubai"></div>
+      <div class="card-date" id="date-dubai">--/--/----</div>
+      <div class="card-tz" id="tz-dubai">GST</div>
+    </article>
+
+    <article class="clock-card" id="clock-tokyo" aria-label="Relógio de Tóquio">
+      <div class="card-flag">🇯🇵</div>
+      <h2 class="card-city">Tóquio</h2>
+      <p class="card-country">Japão</p>
+      <div class="card-time" id="time-tokyo">--:--:--</div>
+      <div class="card-ampm" id="ampm-tokyo"></div>
+      <div class="card-date" id="date-tokyo">--/--/----</div>
+      <div class="card-tz" id="tz-tokyo">JST</div>
+    </article>
+
+  </main>
+
+  <!-- ======= FOOTER ======= -->
+  <footer class="site-footer">
+    <p>© 2026 PORTECOS ACADEMIC IA — Plataforma de formação técnica para o mercado angolano lusófono</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
