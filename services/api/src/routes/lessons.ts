@@ -6,12 +6,13 @@ import {
   updateLesson,
 } from '../controllers/lessonController';
 import { authenticate } from '../middlewares/auth';
+import { apiLimiter, writeLimiter } from '../middlewares/rateLimit';
 
 const router = Router();
 
-router.get('/course/:courseId', getLessonsByCourse);
-router.get('/:id', getLessonById);
-router.post('/', authenticate, createLesson);
-router.put('/:id', authenticate, updateLesson);
+router.get('/course/:courseId', apiLimiter, getLessonsByCourse);
+router.get('/:id', apiLimiter, getLessonById);
+router.post('/', apiLimiter, writeLimiter, authenticate, createLesson);
+router.put('/:id', apiLimiter, writeLimiter, authenticate, updateLesson);
 
 export default router;

@@ -1,4 +1,5 @@
 import express from 'express';
+import { rateLimit } from 'express-rate-limit';
 import path from 'path';
 import fs from 'fs';
 import Handlebars from 'handlebars';
@@ -10,6 +11,15 @@ const app = express();
 app.use(express.json());
 
 const PORT = process.env.CERTIFICATE_SERVICE_PORT ?? 4003;
+
+/** Rate limiter for certificate generation: max 20 per 15 min per IP */
+const certLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Demasiados pedidos de certificado. Tente novamente mais tarde.' },
+});
 
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok', service: 'PORTECOS Certificate Service' });
@@ -24,7 +34,7 @@ interface CertificateData {
   instructorName: string;
 }
 
-app.post('/api/certificates/generate', async (req, res) => {
+app.post('/api/certificates/generate', certLimiter, async (req, res) => {
   try {
     const data = req.body as CertificateData;
 
