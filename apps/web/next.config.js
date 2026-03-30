@@ -2,7 +2,12 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['storage.portecosacademic.ao'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'storage.portecosacademic.ao',
+      },
+    ],
   },
   experimental: {
     typedRoutes: true,
