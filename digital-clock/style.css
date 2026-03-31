@@ -1,0 +1,299 @@
+/* =====================================================
+   PORTECOS ACADEMIC IA — Relógio Mundial
+   style.css — Dark theme, responsive card layout
+   ===================================================== */
+
+/* ---- Reset & Base ---- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg-start:   #0f0f23;
+  --bg-end:     #1a1a3e;
+  --card-bg:    rgba(255, 255, 255, 0.05);
+  --card-border: rgba(255, 255, 255, 0.1);
+  --accent-blue: #4fc3f7;
+  --accent-gold: #ffd54f;
+  --text-main:  #e0e0e0;
+  --text-muted: #9e9e9e;
+  --glow-blue:  0 0 18px rgba(79, 195, 247, 0.35);
+  --glow-gold:  0 0 28px rgba(255, 213, 79, 0.45);
+  --radius:     16px;
+  --transition: 0.3s ease;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
+  min-height: 100vh;
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- Header ---- */
+.site-header {
+  text-align: center;
+  padding: 2.5rem 1rem 1.5rem;
+  border-bottom: 1px solid var(--card-border);
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.header-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.brand {
+  font-size: clamp(1.3rem, 4vw, 2rem);
+  font-weight: 700;
+  color: var(--accent-blue);
+  letter-spacing: 0.04em;
+  text-shadow: var(--glow-blue);
+}
+
+.subtitle {
+  font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ---- Toggle Button ---- */
+.btn-toggle {
+  margin-top: 0.8rem;
+  padding: 0.5rem 1.4rem;
+  background: transparent;
+  border: 2px solid var(--accent-blue);
+  border-radius: 50px;
+  color: var(--accent-blue);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition), box-shadow var(--transition);
+  letter-spacing: 0.03em;
+}
+
+.btn-toggle:hover,
+.btn-toggle:focus-visible {
+  background: var(--accent-blue);
+  color: var(--bg-start);
+  box-shadow: var(--glow-blue);
+  outline: none;
+}
+
+/* ---- Clock Grid ---- */
+.clock-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem 1.5rem;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Primary card spans two columns when there is room */
+.clock-card.primary {
+  grid-column: span 2;
+}
+
+@media (max-width: 600px) {
+  .clock-card.primary {
+    grid-column: span 1;
+  }
+}
+
+/* ---- Clock Card ---- */
+.clock-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 1.6rem 1.4rem;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle top gradient line */
+.clock-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+  opacity: 0.6;
+  transition: opacity var(--transition);
+}
+
+.clock-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--glow-blue);
+  border-color: rgba(79, 195, 247, 0.4);
+}
+
+.clock-card:hover::before {
+  opacity: 1;
+}
+
+/* ---- Primary (Luanda) ---- */
+.clock-card.primary {
+  border: 2px solid var(--accent-gold);
+  box-shadow: var(--glow-gold);
+}
+
+.clock-card.primary::before {
+  background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+  opacity: 0.8;
+}
+
+.clock-card.primary:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 40px rgba(255, 213, 79, 0.55);
+  border-color: var(--accent-gold);
+}
+
+.clock-card.primary .card-time {
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  color: var(--accent-gold);
+  text-shadow: 0 0 20px rgba(255, 213, 79, 0.6);
+}
+
+.clock-card.primary .card-city {
+  font-size: clamp(1.2rem, 3vw, 1.7rem);
+  color: var(--accent-gold);
+}
+
+/* ---- Card Content ---- */
+.card-flag {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+
+.card-city {
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 0.03em;
+  margin-bottom: 0.1rem;
+}
+
+.card-country {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 1rem;
+}
+
+.card-time {
+  font-family: 'Courier New', 'Lucida Console', monospace;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 700;
+  color: var(--accent-blue);
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 14px rgba(79, 195, 247, 0.5);
+  line-height: 1;
+  margin-bottom: 0.25rem;
+
+  /* Smooth digit animation via opacity flicker prevention */
+  transition: opacity 0.1s ease;
+}
+
+.card-ampm {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  min-height: 1.2em;
+  margin-bottom: 0.4rem;
+}
+
+.card-date {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  margin-bottom: 0.5rem;
+}
+
+.card-tz {
+  display: inline-block;
+  padding: 0.2rem 0.7rem;
+  border-radius: 50px;
+  background: rgba(79, 195, 247, 0.12);
+  border: 1px solid rgba(79, 195, 247, 0.3);
+  color: var(--accent-blue);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.clock-card.primary .card-tz {
+  background: rgba(255, 213, 79, 0.12);
+  border-color: rgba(255, 213, 79, 0.35);
+  color: var(--accent-gold);
+}
+
+/* ---- Footer ---- */
+.site-footer {
+  text-align: center;
+  padding: 1.2rem;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  border-top: 1px solid var(--card-border);
+  background: rgba(0, 0, 0, 0.2);
+  letter-spacing: 0.03em;
+}
+
+/* ---- Digit pulse animation ---- */
+@keyframes pulse-tick {
+  0%   { opacity: 1; }
+  10%  { opacity: 0.7; }
+  20%  { opacity: 1; }
+}
+
+.card-time.tick {
+  animation: pulse-tick 0.25s ease;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 480px) {
+  .clock-grid {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .clock-card.primary {
+    grid-column: span 1;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .clock-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .clock-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
