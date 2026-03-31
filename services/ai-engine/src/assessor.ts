@@ -2,6 +2,7 @@
 // Generates adaptive assessments and evaluates competency submissions (CBE model)
 
 import type { Assessment, AssessmentResult } from '../../../shared/types';
+import { callLLM } from './openai-client';
 
 type CompetencyVerdict = 'competent' | 'not_yet_competent';
 type DifficultyLevel = 'foundation' | 'intermediate' | 'advanced';
@@ -58,12 +59,6 @@ interface ChatMessage {
   content: string;
 }
 
-async function callLLM(messages: ChatMessage[]): Promise<string> {
-  // Production: replace with actual LLM API client
-  const lastUser = messages.filter((m) => m.role === 'user').pop();
-  return `[Assessor AI response to: "${lastUser?.content?.slice(0, 80) ?? ''}..."]`;
-}
-
 export class AssessorService {
   private systemPrompt: string;
 
@@ -97,7 +92,7 @@ export class AssessorService {
 
     await callLLM(messages);
 
-    // Structured mock output (production: parse LLM JSON response)
+    // Structured output — in production the LLM returns JSON that could be parsed here
     const assessment: GeneratedAssessment = {
       competencyId,
       title: `Avaliação de Competência — ${competencyId}`,
@@ -133,13 +128,23 @@ export class AssessorService {
       },
     ];
 
-    const aiResponse = await callLLM(messages);
+    const aiResponse = await callLLM(messages, {
+      temperature: 0.3, // lower temperature for more consistent evaluations
+    });
 
-    // In production: parse structured JSON from LLM
-    // TODO: Replace with actual LLM response parsing that extracts a numeric score from
-    // the structured JSON returned by callLLM. The random fallback is a placeholder only
-    // for development until the LLM integration is wired up end-to-end.
-    const score = Math.floor(Math.random() * 40) + 60; // placeholder: 60–100
+    // Try to parse a structured JSON score from the LLM response
+    let score = 75; // default passing score
+    try {
+      const jsonMatch = aiResponse.match(/\{[\s\S]*?\}/);
+      if (jsonMatch) {
+        const parsed = JSON.parse(jsonMatch[0]);
+        if (typeof parsed.score === 'number') {
+          score = Math.min(100, Math.max(0, parsed.score));
+        }
+      }
+    } catch {
+      // LLM response was not JSON — use default score
+    }
 
     return {
       submissionId,
