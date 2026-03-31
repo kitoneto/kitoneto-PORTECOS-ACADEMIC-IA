@@ -1,5 +1,6 @@
 'use client';
 
+import { use } from 'react';
 import Link from 'next/link';
 import AssessmentPanel from '@/components/AssessmentPanel';
 import MentorChat from '@/components/MentorChat';
@@ -55,11 +56,12 @@ const MOCK_COMPETENCIES: Record<string, {
 };
 
 interface Props {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export default function CompetenciaPage({ params }: Props) {
-  const comp = MOCK_COMPETENCIES[params.id] ?? MOCK_COMPETENCIES['1'];
+  const { id } = use(params);
+  const comp = MOCK_COMPETENCIES[id] ?? MOCK_COMPETENCIES['1'];
   const statusConfig = {
     not_started:       { label: 'Não Iniciado',   color: 'bg-gray-100 text-gray-700'   },
     in_progress:       { label: 'Em Progresso',   color: 'bg-blue-100 text-blue-700'   },

@@ -28,7 +28,7 @@ export default function HomePage() {
       <section className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white py-24 px-6">
         <div className="max-w-5xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-yellow-500/20 border border-yellow-400/30 rounded-full px-4 py-2 mb-6 text-yellow-300 text-sm font-medium">
-            🇦🇴 Modelo CBE — Competency-Based Education
+            <span aria-label="Bandeira de Angola" role="img">🇦🇴</span> Modelo CBE — Competency-Based Education
           </div>
           <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
             A Primeira Universidade Virtual{' '}

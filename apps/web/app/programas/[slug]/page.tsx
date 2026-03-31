@@ -3,7 +3,7 @@ import { PROGRAMS, AREAS } from '@shared/types';
 import DegreeTimeline from '@/components/DegreeTimeline';
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 // Sample competencies per program area (shared mock data)
@@ -45,8 +45,9 @@ export function generateStaticParams() {
   return PROGRAMS.map((p) => ({ slug: p.slug }));
 }
 
-export default function ProgramaDetailPage({ params }: Props) {
-  const program = PROGRAMS.find((p) => p.slug === params.slug);
+export default async function ProgramaDetailPage({ params }: Props) {
+  const { slug } = await params;
+  const program = PROGRAMS.find((p) => p.slug === slug);
 
   if (!program) {
     return (

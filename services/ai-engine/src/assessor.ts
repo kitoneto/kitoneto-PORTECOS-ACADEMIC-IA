@@ -136,7 +136,10 @@ export class AssessorService {
     const aiResponse = await callLLM(messages);
 
     // In production: parse structured JSON from LLM
-    const score = Math.floor(Math.random() * 40) + 60; // mock: 60–100
+    // TODO: Replace with actual LLM response parsing that extracts a numeric score from
+    // the structured JSON returned by callLLM. The random fallback is a placeholder only
+    // for development until the LLM integration is wired up end-to-end.
+    const score = Math.floor(Math.random() * 40) + 60; // placeholder: 60–100
 
     return {
       submissionId,

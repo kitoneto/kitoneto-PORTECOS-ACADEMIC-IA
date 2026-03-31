@@ -4,8 +4,13 @@ import Link from 'next/link';
 
 const menuItems = [
   { href: '/', icon: '🏠', label: 'Início' },
+  { href: '/programas', icon: '🎓', label: 'Programas' },
+  { href: '/dashboard', icon: '📊', label: 'Dashboard' },
+  { href: '/dashboard/mentor', icon: '🤝', label: 'Mentor IA' },
+  { href: '/admissao', icon: '📋', label: 'Candidatura' },
+  { href: '/mensalidade', icon: '💳', label: 'Mensalidade' },
+  // Legacy course browser — kept while CBE and classic course content coexist
   { href: '/cursos', icon: '📚', label: 'Cursos' },
-  { href: '/licao', icon: '✏️', label: 'Lições' },
   { href: '/perfil', icon: '👤', label: 'Perfil' },
 ];
 
