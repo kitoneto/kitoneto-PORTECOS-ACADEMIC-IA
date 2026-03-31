@@ -324,12 +324,65 @@ CREATE INDEX idx_admissions_status  ON admissions (status);
 -- =============================================
 CREATE TRIGGER trg_mentor_sessions_updated_at
     BEFORE UPDATE ON mentor_sessions
-    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
 CREATE TRIGGER trg_study_plans_updated_at
     BEFORE UPDATE ON study_plans
-    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
 CREATE TRIGGER trg_admissions_updated_at
     BEFORE UPDATE ON admissions
-    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+
+-- =============================================
+-- MES ANGOLA CURRICULUM COMPLIANCE
+-- =============================================
+
+-- ==================
+-- MES CURRICULUM MAPPING
+-- ==================
+CREATE TABLE mes_curriculum_mapping (
+    id               UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    program_id       UUID NOT NULL REFERENCES programs(id) ON DELETE CASCADE,
+    mes_discipline   VARCHAR(500) NOT NULL,
+    mes_code         VARCHAR(50),
+    mes_year         INTEGER NOT NULL,
+    mes_semester     INTEGER NOT NULL,
+    mes_hours        INTEGER NOT NULL DEFAULT 60,
+    competency_ids   UUID[] NOT NULL,
+    is_mandatory     BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at       TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_mes_mapping_program ON mes_curriculum_mapping(program_id);
+
+-- ==================
+-- COMPETENCY PREREQUISITES
+-- ==================
+CREATE TABLE competency_prerequisites (
+    id                  UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    competency_id       UUID NOT NULL REFERENCES competencies(id) ON DELETE CASCADE,
+    prerequisite_id     UUID NOT NULL REFERENCES competencies(id) ON DELETE CASCADE,
+    UNIQUE(competency_id, prerequisite_id)
+);
+
+CREATE INDEX idx_prereq_competency ON competency_prerequisites(competency_id);
+CREATE INDEX idx_prereq_prerequisite ON competency_prerequisites(prerequisite_id);
+
+-- ==================
+-- HUMAN REVIEW REQUIREMENTS
+-- ==================
+CREATE TABLE human_review_requirements (
+    id               UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    assessment_id    UUID NOT NULL REFERENCES assessments(id) ON DELETE CASCADE,
+    requires_human   BOOLEAN NOT NULL DEFAULT FALSE,
+    reviewer_id      UUID REFERENCES users(id) ON DELETE SET NULL,
+    review_status    VARCHAR(20) DEFAULT 'pending' CHECK (review_status IN ('pending', 'approved', 'rejected', 'revision_needed')),
+    review_notes     TEXT,
+    reviewed_at      TIMESTAMPTZ,
+    created_at       TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_human_review_assessment ON human_review_requirements(assessment_id);
+CREATE INDEX idx_human_review_status ON human_review_requirements(review_status);

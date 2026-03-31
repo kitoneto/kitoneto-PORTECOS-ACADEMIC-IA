@@ -2,6 +2,8 @@
 // Generates adaptive assessments and evaluates competency submissions (CBE model)
 
 import type { Assessment, AssessmentResult } from '../../../shared/types';
+import { PrerequisiteChecker } from './prerequisite-checker';
+import { HumanReviewService } from './human-review';
 
 type CompetencyVerdict = 'competent' | 'not_yet_competent';
 type DifficultyLevel = 'foundation' | 'intermediate' | 'advanced';
@@ -66,6 +68,8 @@ async function callLLM(messages: ChatMessage[]): Promise<string> {
 
 export class AssessorService {
   private systemPrompt: string;
+  private prerequisiteChecker: PrerequisiteChecker;
+  private humanReviewService: HumanReviewService;
 
   constructor(systemPrompt?: string) {
     this.systemPrompt = systemPrompt ?? `
@@ -75,6 +79,8 @@ export class AssessorService {
       Always provide constructive, specific feedback in Portuguese (pt-AO).
       Reference Angolan engineering standards and contexts where appropriate.
     `;
+    this.prerequisiteChecker = new PrerequisiteChecker();
+    this.humanReviewService = new HumanReviewService();
   }
 
   /**
@@ -183,6 +189,61 @@ export class AssessorService {
     }
 
     return 'not_yet_competent';
+  }
+
+  /**
+   * Full compliance-aware evaluation flow:
+   * 1. Verifies the student has completed all prerequisites (strict — no bypass).
+   * 2. Runs the AI evaluation.
+   * 3. If the assessment requires human review, sets status to 'pending_review'
+   *    instead of finalising the verdict immediately.
+   */
+  async evaluateWithCompliance(
+    studentId: string,
+    competencyId: string,
+    assessmentId: string,
+    submissionId: string,
+    content: string
+  ): Promise<
+    EvaluationResult & {
+      prerequisiteCheck: { allowed: boolean; missingPrerequisites: string[]; message: string };
+      pendingHumanReview: boolean;
+    }
+  > {
+    // Step 1 — prerequisite check (strict enforcement)
+    const prereqCheck = await this.prerequisiteChecker.canAttempt(studentId, competencyId);
+
+    if (!prereqCheck.allowed) {
+      throw new Error(
+        `Pré-requisitos não cumpridos: ${prereqCheck.message} (IDs em falta: ${prereqCheck.missingPrerequisites.join(', ')})`
+      );
+    }
+
+    // Step 2 — AI evaluation
+    const evaluation = await this.evaluateSubmission(submissionId, content);
+
+    // Step 3 — human review check
+    const needsHumanReview = await this.humanReviewService.requiresHumanReview(assessmentId);
+
+    if (needsHumanReview) {
+      await this.humanReviewService.submitForReview(assessmentId, submissionId, evaluation);
+
+      return {
+        ...evaluation,
+        // Retain the AI verdict but surface the pending review state via pendingHumanReview.
+        // The final competency status must not be committed until the professor decides.
+        overallFeedback:
+          'A tua submissão foi recebida e está a aguardar revisão pelo professor. Serás notificado em breve.',
+        prerequisiteCheck: prereqCheck,
+        pendingHumanReview: true,
+      };
+    }
+
+    return {
+      ...evaluation,
+      prerequisiteCheck: prereqCheck,
+      pendingHumanReview: false,
+    };
   }
 
   // ── Private helpers ──────────────────────────────────────────────────────────
