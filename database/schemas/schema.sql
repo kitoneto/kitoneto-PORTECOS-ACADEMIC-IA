@@ -174,3 +174,162 @@ CREATE TRIGGER tr_courses_updated_at BEFORE UPDATE ON courses FOR EACH ROW EXECU
 CREATE TRIGGER tr_lessons_updated_at BEFORE UPDATE ON lessons FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 CREATE TRIGGER tr_progress_updated_at BEFORE UPDATE ON progress FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 CREATE TRIGGER tr_payments_updated_at BEFORE UPDATE ON payments FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+
+-- =============================================
+-- WGU / CBE MODEL — New Tables
+-- =============================================
+
+-- ==================
+-- PROGRAMS
+-- ==================
+CREATE TABLE programs (
+    id                  UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    slug                VARCHAR(200) UNIQUE NOT NULL,
+    name                VARCHAR(500) NOT NULL,
+    level               VARCHAR(20) NOT NULL CHECK (level IN ('bachelor', 'master', 'certificate')),
+    area_id             UUID REFERENCES areas(id) ON DELETE SET NULL,
+    description         TEXT,
+    duration_terms      INTEGER NOT NULL DEFAULT 8,
+    competency_count    INTEGER NOT NULL DEFAULT 0,
+    price_per_term_aoa  INTEGER NOT NULL DEFAULT 45000,
+    is_published        BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at          TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- ==================
+-- COMPETENCIES
+-- ==================
+CREATE TABLE competencies (
+    id               UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    program_id       UUID NOT NULL REFERENCES programs(id) ON DELETE CASCADE,
+    title            VARCHAR(500) NOT NULL,
+    description      TEXT,
+    "order"          INTEGER NOT NULL DEFAULT 1,
+    assessment_type  VARCHAR(20) NOT NULL CHECK (assessment_type IN ('quiz', 'project', 'exam')),
+    passing_score    INTEGER NOT NULL DEFAULT 70,
+    created_at       TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- ==================
+-- TERMS
+-- ==================
+CREATE TABLE terms (
+    id           UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id      UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    program_id   UUID NOT NULL REFERENCES programs(id) ON DELETE CASCADE,
+    start_date   DATE NOT NULL,
+    end_date     DATE NOT NULL,
+    status       VARCHAR(20) NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'completed', 'cancelled')),
+    created_at   TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- ==================
+-- PROGRAM ENROLLMENTS
+-- ==================
+CREATE TABLE program_enrollments (
+    id           UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id      UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    program_id   UUID NOT NULL REFERENCES programs(id) ON DELETE CASCADE,
+    term_id      UUID REFERENCES terms(id) ON DELETE SET NULL,
+    status       VARCHAR(20) NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'on_hold', 'graduated', 'withdrawn')),
+    enrolled_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    UNIQUE (user_id, program_id)
+);
+
+-- ==================
+-- ASSESSMENTS
+-- ==================
+CREATE TABLE assessments (
+    id               UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    competency_id    UUID NOT NULL REFERENCES competencies(id) ON DELETE CASCADE,
+    title            VARCHAR(500) NOT NULL,
+    type             VARCHAR(20) NOT NULL CHECK (type IN ('quiz', 'project', 'exam')),
+    content_json     JSONB NOT NULL DEFAULT '{}',
+    max_attempts     INTEGER NOT NULL DEFAULT 3,
+    created_at       TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- ==================
+-- ASSESSMENT RESULTS
+-- ==================
+CREATE TABLE assessment_results (
+    id               UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id          UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    assessment_id    UUID NOT NULL REFERENCES assessments(id) ON DELETE CASCADE,
+    status           VARCHAR(25) NOT NULL CHECK (status IN ('competent', 'not_yet_competent')),
+    attempt_number   INTEGER NOT NULL DEFAULT 1,
+    submitted_at     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    feedback         TEXT
+);
+
+-- ==================
+-- MENTOR SESSIONS
+-- ==================
+CREATE TABLE mentor_sessions (
+    id               UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id          UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    messages_json    JSONB NOT NULL DEFAULT '[]',
+    session_type     VARCHAR(20) NOT NULL DEFAULT 'general' CHECK (session_type IN ('motivation', 'planning', 'progress', 'general')),
+    created_at       TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at       TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- ==================
+-- STUDY PLANS
+-- ==================
+CREATE TABLE study_plans (
+    id                  UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id             UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    term_id             UUID NOT NULL REFERENCES terms(id) ON DELETE CASCADE,
+    weekly_goals_json   JSONB NOT NULL DEFAULT '[]',
+    created_at          TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at          TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    UNIQUE (user_id, term_id)
+);
+
+-- ==================
+-- ADMISSIONS
+-- ==================
+CREATE TABLE admissions (
+    id               UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id          UUID REFERENCES users(id) ON DELETE SET NULL,
+    program_id       UUID NOT NULL REFERENCES programs(id) ON DELETE CASCADE,
+    status           VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'reviewing', 'accepted', 'rejected')),
+    documents_json   JSONB NOT NULL DEFAULT '[]',
+    submitted_at     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at       TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- =============================================
+-- INDEXES — CBE tables
+-- =============================================
+CREATE INDEX idx_programs_level     ON programs (level);
+CREATE INDEX idx_programs_area_id   ON programs (area_id);
+CREATE INDEX idx_competencies_prog  ON competencies (program_id);
+CREATE INDEX idx_terms_user         ON terms (user_id);
+CREATE INDEX idx_terms_status       ON terms (status);
+CREATE INDEX idx_enrollments_user   ON program_enrollments (user_id);
+CREATE INDEX idx_enrollments_prog   ON program_enrollments (program_id);
+CREATE INDEX idx_assessments_comp   ON assessments (competency_id);
+CREATE INDEX idx_results_user       ON assessment_results (user_id);
+CREATE INDEX idx_results_assessment ON assessment_results (assessment_id);
+CREATE INDEX idx_mentor_user        ON mentor_sessions (user_id);
+CREATE INDEX idx_study_plans_user   ON study_plans (user_id);
+CREATE INDEX idx_admissions_user    ON admissions (user_id);
+CREATE INDEX idx_admissions_status  ON admissions (status);
+
+-- =============================================
+-- TRIGGERS — updated_at for new tables
+-- =============================================
+CREATE TRIGGER trg_mentor_sessions_updated_at
+    BEFORE UPDATE ON mentor_sessions
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER trg_study_plans_updated_at
+    BEFORE UPDATE ON study_plans
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER trg_admissions_updated_at
+    BEFORE UPDATE ON admissions
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();

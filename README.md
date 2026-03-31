@@ -1,132 +1,209 @@
-<div align="center">
-  <h1>🎓 PORTECOS ACADEMIC IA</h1>
-  <p><strong>Plataforma de formação técnica com IA para o mercado angolano lusófono</strong></p>
+# PORTECOS ACADEMIC IA — A Primeira Universidade Virtual de Engenharia de Angola
 
-  ![License](https://img.shields.io/badge/license-MIT-blue.svg)
-  ![Node](https://img.shields.io/badge/node-%3E%3D18-green.svg)
-  ![Next.js](https://img.shields.io/badge/Next.js-14-black.svg)
-  ![TypeScript](https://img.shields.io/badge/TypeScript-5.4-blue.svg)
-  ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-316192.svg)
-  ![Docker](https://img.shields.io/badge/Docker-ready-2496ED.svg)
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-38bdf8?logo=tailwindcss)](https://tailwindcss.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue?logo=postgresql)](https://postgresql.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-  <p>
-    <a href="#-início-rápido">Início Rápido</a> ·
-    <a href="#-stack">Stack</a> ·
-    <a href="#-áreas-de-formação">Áreas de Formação</a> ·
-    <a href="#-estrutura-do-projeto">Estrutura</a> ·
-    <a href="docs/product/README.md">Roadmap</a>
-  </p>
-</div>
+> **Modelo CBE (Competency-Based Education)** — Sem notas, sem horários fixos.
+> Demonstras o que sabes e obtens o teu grau. Inspirado no modelo WGU (Western Governors University).
 
 ---
 
-> Inspirada no Brilliant.org — mas focada em **resolver problemas reais de obra** nas áreas técnicas de Angola. 🇦🇴
+## 🇦🇴 O que é a PORTECOS?
 
-## 📸 Screenshots
+A **PORTECOS ACADEMIC IA** é a primeira universidade virtual de engenharia de Angola.
+Oferece Licenciaturas, Mestrados e Certificados em Engenharia, 100% online, com recurso a
+Inteligência Artificial personalizada e o modelo académico CBE.
 
-| Homepage | Catálogo de Cursos | Lição Interativa |
-|:---:|:---:|:---:|
-| *[screenshot placeholder]* | *[screenshot placeholder]* | *[screenshot placeholder]* |
+### Modelo CBE — Como funciona?
 
-## 🚀 Início Rápido
+| Educação Tradicional | PORTECOS (CBE) |
+|---|---|
+| Notas de 0–20 | Competente / Ainda Não |
+| Semestres fixos | Termos de 6 meses, ritmo próprio |
+| Paga por disciplina | Paga por termo (6 meses), preço fixo |
+| Reprovações | Novas tentativas sempre disponíveis |
+| Professores com horário | Mentor IA disponível 24/7 |
+
+**Quanto mais rápido concluíres, menos pagas.**
+
+---
+
+## 🎓 Programas Disponíveis
+
+### Licenciaturas (B.S.) — 8 termos × 6 meses
+
+| Programa | Competências | Preço/Termo |
+|---|---|---|
+| B.S. Engenharia Civil | 40 | 45 000 AOA |
+| B.S. Engenharia de Petróleo & Gás | 42 | 55 000 AOA |
+| B.S. Engenharia Ambiental | 38 | 42 000 AOA |
+| B.S. Engenharia Mecânica | 40 | 45 000 AOA |
+| B.S. Engenharia de Energias Renováveis | 36 | 48 000 AOA |
+| B.S. Engenharia Electrotécnica | 40 | 45 000 AOA |
+| B.S. Engenharia de Telecomunicações | 38 | 48 000 AOA |
+| B.S. Inteligência Artificial & Data Science | 42 | 55 000 AOA |
+
+### Mestrados (M.S.) — 4 termos × 6 meses
+
+| Programa | Competências | Preço/Termo |
+|---|---|---|
+| M.S. Gestão de Obras & Fiscalização | 20 | 75 000 AOA |
+| M.S. Engenharia de Petróleo (Avançado) | 22 | 85 000 AOA |
+| M.S. Inteligência Artificial Aplicada | 20 | 80 000 AOA |
+
+### Certificados — 1 termo × 6 meses
+
+| Programa | Competências | Preço/Termo |
+|---|---|---|
+| Certificado em Fiscalização de Obras | 8 | 35 000 AOA |
+| Certificado em Energias Renováveis | 6 | 30 000 AOA |
+| Certificado em IA para Engenharia | 6 | 35 000 AOA |
+
+---
+
+## 🏗️ Stack Tecnológico
+
+```
+apps/
+  web/          — Next.js 15 + Tailwind CSS (frontend principal)
+  admin/        — Painel de administração
+
+services/
+  ai-engine/    — Motor de IA (Mentor, Avaliador, Tutor)
+  api/          — REST API (Express + PostgreSQL)
+  auth-service/ — Autenticação JWT
+
+shared/
+  types/        — Interfaces TypeScript partilhadas
+
+database/
+  schemas/      — Schema PostgreSQL (CBE + Legacy)
+  migrations/   — Migrações de base de dados
+
+content/
+  engenharia-civil/
+  petroleo-gas/
+  ambiente/
+  ... (9 áreas)
+
+docs/
+  wgu-model.md       — Explicação do modelo CBE
+  student-journey.md — Jornada do estudante
+```
+
+### Tecnologias Principais
+
+- **Frontend:** Next.js 15, React 19, TypeScript, Tailwind CSS
+- **Backend:** Node.js, Express, TypeScript
+- **Base de Dados:** PostgreSQL 16
+- **IA:** OpenAI-compatible API (GPT-4o / Ollama local)
+- **Autenticação:** JWT + bcrypt
+- **Infraestrutura:** Docker, Nginx
+
+---
+
+## 🚀 Como Começar
 
 ### Pré-requisitos
-- Node.js 18+
-- Docker & Docker Compose
-- PostgreSQL 16 (ou usar Docker)
+- Node.js 20+
+- PostgreSQL 16+
+- npm ou yarn
 
 ### Instalação
 
 ```bash
-# 1. Clonar o repositório
-git clone https://github.com/kitoneto/kitoneto-PORTECOS-ACADEMIC-IA.git
-cd kitoneto-PORTECOS-ACADEMIC-IA
+# 1. Clone o repositório
+git clone https://github.com/kitoneto/PORTECOS-ACADEMIC-IA.git
+cd PORTECOS-ACADEMIC-IA
 
-# 2. Copiar variáveis de ambiente
-cp .env.example .env.local
-
-# 3. Instalar dependências
+# 2. Instala dependências
 npm install
 
-# 4. Iniciar serviços com Docker
-docker-compose -f infrastructure/docker/docker-compose.yml up -d
+# 3. Copia as variáveis de ambiente
+cp .env.example .env
+# Edita o .env com as tuas credenciais
 
-# 5. Correr migrações da base de dados
-npm run db:migrate
+# 4. Inicializa a base de dados
+psql -U postgres -c "CREATE DATABASE portecos_db;"
+psql -U postgres -d portecos_db -f database/schemas/schema.sql
 
-# 6. Iniciar em modo desenvolvimento
+# 5. Inicia o servidor de desenvolvimento
 npm run dev
 ```
 
-Abrir [http://localhost:3000](http://localhost:3000) 🎉
+### Aceder à aplicação
 
-## 🛠️ Stack
-
-| Camada | Tecnologia |
-|--------|-----------|
-| **Frontend** | Next.js 14, React 18, Tailwind CSS, TypeScript |
-| **Backend** | Node.js, Express, TypeScript |
-| **Base de Dados** | PostgreSQL 16 |
-| **IA** | OpenAI GPT-4o / Google Gemini |
-| **Auth** | JWT + Refresh Tokens |
-| **Infra** | Docker, GitHub Actions |
-| **Monorepo** | Turborepo + npm workspaces |
-| **Cache** | Redis |
-
-## 🎓 Áreas de Formação
-
-| Área | Módulos | Problema Real Angola |
-|------|---------|---------------------|
-| 🏗️ Engenharia Civil | Fundações, Estruturas, Betão, Topografia | Solo laterítico em Luanda |
-| 🛢️ Petróleo & Gás | Perfuração, Produção, Refino | Perfuração offshore Cabinda |
-| 🌿 Ambiente | Avaliação de Impacto, Gestão Resíduos | Rio Kwanza |
-| 🔨 Obras & Fiscalização | Fiscalização, Normas, Qualidade | Normas angolanas LNEC |
-| ⚙️ Mecânica | Termodinâmica, Máquinas, Manutenção | Equipamentos petrolíferos |
-| ☀️ Energias Renováveis | Solar, Eólica, Hídrica | Painéis solares no Namibe |
-| ⚡ Eletricidade & Eletrónica | Circuitos, Instalações, Automação | Instalações em Luanda |
-| 📡 Telecomunicações | Redes, Fibra Óptica, 5G | Angola Cables |
-| 🤖 Inteligência Artificial | ML, Deep Learning, NLP | Previsão produção petrolífera |
-
-## 📁 Estrutura do Projeto
-
-```
-portecos-academic-ia/
-├── apps/
-│   ├── web/          → Next.js 14 (app principal)
-│   ├── admin/        → Painel administrativo
-│   └── mobile/       → React Native/Expo (futuro)
-├── services/
-│   ├── api/          → Express REST API
-│   ├── ai-engine/    → Motor de IA (tutor, avaliação, recomendação)
-│   ├── auth-service/ → Autenticação JWT
-│   ├── payment-service/     → Pagamentos angolanos
-│   ├── certificate-service/ → Geração de certificados PDF
-│   └── notification-service/→ Email, WhatsApp, push
-├── database/
-│   ├── migrations/   → Migrações SQL
-│   ├── schemas/      → Schema PostgreSQL
-│   └── seeds/        → Dados de exemplo
-├── content/          → Conteúdo por área técnica
-├── shared/           → Tipos, UI, utils partilhados
-├── infrastructure/   → Docker, CI/CD, monitoring
-└── docs/             → Documentação completa
-```
-
-## 🤝 Contribuir
-
-1. Fork o repositório
-2. Cria uma branch (`git checkout -b feature/nova-funcionalidade`)
-3. Commit as mudanças (`git commit -m 'feat: adicionar nova funcionalidade'`)
-4. Push para a branch (`git push origin feature/nova-funcionalidade`)
-5. Abre um Pull Request
-
-## 📜 Licença
-
-MIT © 2026 [PORTECOS ACADEMIC IA](https://portecosacademic.ao)
+- **Frontend:** http://localhost:3000
+- **API:** http://localhost:4000
+- **Admin:** http://localhost:3001
 
 ---
 
-<div align="center">
-  <p>Feito com ❤️ para Angola 🇦🇴</p>
-  <p><strong>PORTECOS ACADEMIC IA</strong> — Transformando a formação técnica em Angola</p>
-</div>
+## 📁 Estrutura de Páginas (Web)
+
+| Rota | Descrição |
+|---|---|
+| `/` | Homepage WGU-style |
+| `/programas` | Catálogo de programas |
+| `/programas/[slug]` | Página individual de programa |
+| `/admissao` | Formulário de candidatura |
+| `/mensalidade` | Preços e calculadora |
+| `/dashboard` | Portal do estudante |
+| `/dashboard/competencia/[id]` | Página de competência |
+| `/dashboard/mentor` | Interface do Mentor IA |
+| `/cursos` | Cursos legados |
+| `/licao` | Exemplo de lição |
+
+---
+
+## 🤖 Serviços de IA
+
+### Mentor IA (`services/ai-engine/src/mentor.ts`)
+- `analyzeProgress(studentId)` — Analisa o progresso actual
+- `generateWeeklyPlan(studentId)` — Cria plano de estudo semanal
+- `sendMotivation(studentId)` — Envia motivação quando necessário
+- `checkTermDeadlines(studentId)` — Alerta sobre prazos do termo
+
+### Avaliador IA (`services/ai-engine/src/assessor.ts`)
+- `generateAssessment(competencyId, difficulty)` — Gera avaliação adaptativa
+- `evaluateSubmission(submissionId, content)` — Avalia submissão de projeto
+- `determineCompetency(results)` — Determina se o estudante é competente
+
+---
+
+## 📄 Documentação
+
+- [`docs/wgu-model.md`](./docs/wgu-model.md) — Explicação do modelo CBE/WGU
+- [`docs/student-journey.md`](./docs/student-journey.md) — Jornada completa do estudante
+- [`docs/api/README.md`](./docs/api/README.md) — Documentação da API
+- [`docs/architecture/README.md`](./docs/architecture/README.md) — Arquitectura do sistema
+
+---
+
+## 🌍 Design System
+
+- **Azul Escuro:** `#1a365d` (blue-900)
+- **Dourado:** `#d69e2e` (yellow-500)
+- **Branco:** `#ffffff`
+- **Língua:** Português angolano (pt-AO)
+- **Interface:** Tailwind CSS
+
+---
+
+## 📜 Licença
+
+MIT License — ver [LICENSE](./LICENSE)
+
+---
+
+## 🤝 Contribuição
+
+Consulta o guia de contribuição antes de submeter pull requests.
+Reporta bugs e sugestões em Issues.
+
+---
+
+**PORTECOS ACADEMIC IA** — *Engenharia para Angola, por Angola.* 🇦🇴
