@@ -118,7 +118,7 @@
 
 ### Competência 20: Projecto Final Petrolífero
 - **Descrição:** Demonstra domínio prático de Projecto Final Petrolífero em contexto angolano
-- **Tipo de Avaliação:** Quiz
+- **Tipo de Avaliação:** Projeto
 - **Critério de Competência:** Resolve correctamente problemas práticos de Projecto Final Petrolífero aplicados a Angola
 - **Tentativas Máximas:** 3
 

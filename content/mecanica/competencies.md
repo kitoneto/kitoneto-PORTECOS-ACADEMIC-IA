@@ -118,7 +118,7 @@
 
 ### Competência 20: Projecto Final Mecânico
 - **Descrição:** Demonstra domínio prático de Projecto Final Mecânico em contexto angolano
-- **Tipo de Avaliação:** Quiz
+- **Tipo de Avaliação:** Projeto
 - **Critério de Competência:** Resolve correctamente problemas práticos de Projecto Final Mecânico aplicados a Angola
 - **Tentativas Máximas:** 3
 

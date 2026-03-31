@@ -118,7 +118,7 @@
 
 ### Competência 20: Projecto Final Electrotécnico
 - **Descrição:** Demonstra domínio prático de Projecto Final Electrotécnico em contexto angolano
-- **Tipo de Avaliação:** Quiz
+- **Tipo de Avaliação:** Projeto
 - **Critério de Competência:** Resolve correctamente problemas práticos de Projecto Final Electrotécnico aplicados a Angola
 - **Tentativas Máximas:** 3
 

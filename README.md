@@ -7,7 +7,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
 > **Modelo CBE (Competency-Based Education)** — Sem notas, sem horários fixos.
-> Demonstras o que sabes e obtens o teu grau. Inspirado no modelo WGU (Western Governors University).
+> Demonstras o que sabes e obténs o teu grau. Inspirado no modelo WGU (Western Governors University).
 
 ---
 

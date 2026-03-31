@@ -35,7 +35,7 @@ export default function HomePage() {
             <span className="text-yellow-400">de Engenharia de Angola</span>
           </h1>
           <p className="text-xl text-blue-200 mb-4 max-w-3xl mx-auto">
-            Inspirado no modelo WGU — sem notas, sem horários fixos. Demonstras o que sabes e obtens o teu grau.
+            Inspirado no modelo WGU — sem notas, sem horários fixos. Demonstras o que sabes e obténs o teu grau.
             Paga por termo (6 meses), não por disciplina.
           </p>
           <p className="text-base text-blue-300 mb-10 max-w-2xl mx-auto">
@@ -74,7 +74,7 @@ export default function HomePage() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-blue-900 mb-3">Como Funciona</h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              O modelo CBE permite-te avançar ao teu ritmo. Estudas, demostras competência e recebes o grau.
+              O modelo CBE permite-te avançar ao teu ritmo. Estudas, demonstras competência e recebes o grau.
             </p>
           </div>
           <StepIndicator steps={STEPS} />

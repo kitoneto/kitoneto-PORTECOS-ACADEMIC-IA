@@ -118,7 +118,7 @@
 
 ### Competência 20: Dissertação de Mestrado
 - **Descrição:** Demonstra domínio prático de Dissertação de Mestrado em contexto angolano
-- **Tipo de Avaliação:** Quiz
+- **Tipo de Avaliação:** Projeto
 - **Critério de Competência:** Resolve correctamente problemas práticos de Dissertação de Mestrado aplicados a Angola
 - **Tentativas Máximas:** 3
 
