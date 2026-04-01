@@ -3,6 +3,9 @@ import dotenv from 'dotenv';
 import { askTutor } from './tutor';
 import { evaluateAnswer } from './evaluator';
 import { getRecommendations } from './recommender';
+import { lessonGenerator } from './lesson-generator';
+import { videoGenerator } from './video-generator';
+import { contentPipeline } from './content-pipeline';
 
 dotenv.config();
 
@@ -53,6 +56,84 @@ app.get('/api/ai/recommend/:userId', async (req, res) => {
     res.json({ data: recommendations });
   } catch {
     res.status(500).json({ error: 'Erro nas recomendações IA' });
+  }
+});
+
+// Lesson generation endpoint
+app.post('/api/ai/generate-lessons', async (req, res) => {
+  try {
+    const { competencyId, title, description, areaSlug } = req.body as {
+      competencyId: string;
+      title: string;
+      description: string;
+      areaSlug: string;
+    };
+
+    if (!competencyId || !title || !description || !areaSlug) {
+      res.status(400).json({ error: 'competencyId, title, description e areaSlug são obrigatórios' });
+      return;
+    }
+
+    const lessons = await lessonGenerator.generateLessonsForCompetency(
+      competencyId,
+      title,
+      description,
+      areaSlug
+    );
+    res.json({ data: lessons });
+  } catch (err) {
+    console.error('[/api/ai/generate-lessons]', err);
+    res.status(500).json({ error: 'Erro na geração de lições' });
+  }
+});
+
+// Video generation endpoint
+app.post('/api/ai/generate-video', async (req, res) => {
+  try {
+    const { lesson } = req.body as { lesson: import('../../../shared/types').Lesson };
+
+    if (!lesson?.id || !lesson?.content) {
+      res.status(400).json({ error: 'lesson com id e content é obrigatório' });
+      return;
+    }
+
+    const result = await videoGenerator.generateVideoForLesson(lesson);
+    res.json({ data: result });
+  } catch (err) {
+    console.error('[/api/ai/generate-video]', err);
+    res.status(500).json({ error: 'Erro na geração de vídeo' });
+  }
+});
+
+// Full pipeline endpoint
+app.post('/api/ai/generate-course-content', async (req, res) => {
+  try {
+    const { competencyId, title, description, areaSlug, courseId } = req.body as {
+      competencyId: string;
+      title: string;
+      description: string;
+      areaSlug: string;
+      courseId: string;
+    };
+
+    if (!competencyId || !title || !description || !areaSlug || !courseId) {
+      res.status(400).json({
+        error: 'competencyId, title, description, areaSlug e courseId são obrigatórios',
+      });
+      return;
+    }
+
+    const lessons = await contentPipeline.generateFullCourseContent(
+      competencyId,
+      title,
+      description,
+      areaSlug,
+      courseId
+    );
+    res.json({ data: lessons });
+  } catch (err) {
+    console.error('[/api/ai/generate-course-content]', err);
+    res.status(500).json({ error: 'Erro no pipeline de geração de conteúdo' });
   }
 });
 

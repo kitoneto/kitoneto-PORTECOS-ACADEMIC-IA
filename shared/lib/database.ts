@@ -129,3 +129,40 @@ export async function getPrograms(filters?: { level?: string; areaId?: string })
   const { data, error } = await query;
   return { data, error };
 }
+
+// Save generated lessons to the `lessons` table for a given course
+export async function saveLessons(
+  courseId: string,
+  lessons: import('../types').GeneratedLesson[]
+): Promise<void> {
+  const supabase = getSupabaseServer();
+  const rows = lessons.map((lesson) => ({
+    course_id: courseId,
+    title: lesson.title,
+    order: lesson.order,
+    type: lesson.type,
+    content: lesson.content,
+    question: lesson.question ?? null,
+    options: lesson.options ?? null,
+    correct_answer: lesson.correctAnswer ?? null,
+    explanation: lesson.explanation ?? null,
+    xp_reward: lesson.xpReward,
+  }));
+
+  const { error } = await supabase.from('lessons').insert(rows);
+  if (error) {
+    throw new Error(`[database] saveLessons failed: ${error.message}`);
+  }
+}
+
+// Update a lesson's video URL after video generation completes
+export async function updateLessonVideoUrl(lessonId: string, videoUrl: string): Promise<void> {
+  const supabase = getSupabaseServer();
+  const { error } = await supabase
+    .from('lessons')
+    .update({ video_url: videoUrl })
+    .eq('id', lessonId);
+  if (error) {
+    throw new Error(`[database] updateLessonVideoUrl failed: ${error.message}`);
+  }
+}

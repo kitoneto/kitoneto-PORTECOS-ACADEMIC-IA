@@ -213,6 +213,41 @@ export interface AdmissionDocument {
 }
 
 // =============================================
+// AUTONOMOUS CONTENT GENERATION — New interfaces
+// =============================================
+
+export interface GeneratedLesson {
+  title: string;
+  order: number;
+  type: 'concept' | 'problem' | 'quiz' | 'video';
+  content: string;
+  question?: string;
+  options?: string[];
+  correctAnswer?: number;
+  explanation?: string;
+  xpReward: number;
+  videoUrl?: string;
+}
+
+export interface ContentGenerationStatus {
+  competencyId: string;
+  status: 'pending' | 'generating_lessons' | 'generating_videos' | 'completed' | 'failed';
+  lessonsGenerated: number;
+  videosGenerated: number;
+  error?: string;
+  startedAt: string;
+  completedAt?: string;
+}
+
+export interface VideoGenerationResult {
+  lessonId: string;
+  videoUrl: string;
+  duration: number;
+  provider: 'heygen' | 'd-id' | 'mock';
+  generatedAt: string;
+}
+
+// =============================================
 // MES ANGOLA CURRICULUM COMPLIANCE — New interfaces
 // =============================================
 
