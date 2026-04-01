@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "rootDirectory": "apps/web",
+  "buildCommand": "cd ../.. && npm run build --workspace=apps/web",
+  "outputDirectory": ".next",
+  "framework": "nextjs",
+  "installCommand": "cd ../.. && npm ci",
+  "env": {
+    "OPENAI_API_KEY": "@openai-api-key",
+    "OPENAI_MODEL": "@openai-model",
+    "SUPABASE_URL": "@supabase-url",
+    "SUPABASE_ANON_KEY": "@supabase-anon-key",
+    "SUPABASE_SERVICE_KEY": "@supabase-service-key",
+    "JWT_SECRET": "@jwt-secret",
+    "REFRESH_TOKEN_SECRET": "@refresh-token-secret"
+  },
+  "build": {
+    "env": {
+      "NEXT_PUBLIC_SUPABASE_URL": "@supabase-url",
+      "NEXT_PUBLIC_SUPABASE_ANON_KEY": "@supabase-anon-key"
+    }
+  },
+  "rewrites": [],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Credentials", "value": "true" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET,POST,PUT,DELETE,OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Authorization, Content-Type" }
+      ]
+    }
+  ]
+}

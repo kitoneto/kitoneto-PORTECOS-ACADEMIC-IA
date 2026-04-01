@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
   try {
     // Dynamic import avoids bundling Supabase on the client side
     const { PrerequisiteChecker } = await import(
-      '../../../../../services/ai-engine/src/prerequisite-checker'
+      '@services/ai-engine/src/prerequisite-checker'
     );
     const checker = new PrerequisiteChecker();
     const result = await checker.canAttempt(studentId, competencyId);

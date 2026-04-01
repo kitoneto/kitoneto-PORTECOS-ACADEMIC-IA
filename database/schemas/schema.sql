@@ -234,6 +234,7 @@ CREATE TABLE program_enrollments (
     term_id      UUID REFERENCES terms(id) ON DELETE SET NULL,
     status       VARCHAR(20) NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'on_hold', 'graduated', 'withdrawn')),
     enrolled_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     UNIQUE (user_id, program_id)
 );
 
@@ -332,6 +333,14 @@ CREATE TRIGGER trg_study_plans_updated_at
 
 CREATE TRIGGER trg_admissions_updated_at
     BEFORE UPDATE ON admissions
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+CREATE TRIGGER trg_ai_sessions_updated_at
+    BEFORE UPDATE ON ai_sessions
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+CREATE TRIGGER trg_program_enrollments_updated_at
+    BEFORE UPDATE ON program_enrollments
     FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
 

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
+import { AuthProvider } from '@/lib/auth-context';
 
 export const metadata: Metadata = {
   title: 'PORTECOS ACADEMIC IA — Formação Técnica com IA para Angola',
@@ -24,12 +25,13 @@ export default function RootLayout({
   return (
     <html lang="pt-AO">
       <body className="min-h-screen flex flex-col bg-gray-50">
-        <Navbar />
-        <div className="flex flex-1">
-          <Sidebar />
-          <main className="flex-1 overflow-auto">{children}</main>
-        </div>
-        <footer className="bg-blue-900 text-white py-8 px-6">
+        <AuthProvider>
+          <Navbar />
+          <div className="flex flex-1">
+            <Sidebar />
+            <main className="flex-1 overflow-auto">{children}</main>
+          </div>
+          <footer className="bg-blue-900 text-white py-8 px-6">
           <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
               <h3 className="font-bold text-yellow-400 text-lg mb-2">PORTECOS ACADEMIC IA</h3>
@@ -56,6 +58,7 @@ export default function RootLayout({
             © {new Date().getFullYear()} PORTECOS ACADEMIC IA. Todos os direitos reservados.
           </div>
         </footer>
+        </AuthProvider>
       </body>
     </html>
   );

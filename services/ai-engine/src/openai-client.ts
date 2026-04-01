@@ -4,7 +4,10 @@
 import OpenAI from 'openai';
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  // Use a placeholder when no key is configured — callLLM (below) returns mock
+  // responses whenever process.env.OPENAI_API_KEY is falsy, so the real client
+  // is never called in development/test environments.
+  apiKey: process.env.OPENAI_API_KEY ?? 'not-set',
 });
 
 const DEFAULT_MODEL = process.env.OPENAI_MODEL || 'gpt-4o';
