@@ -2,20 +2,15 @@
 // Checks if a student can attempt a competency based on prerequisite chain
 
 import type { PrerequisiteCheckResult } from '../../../shared/types';
-
-// Supabase client — lazy-initialised so the service works without env vars in dev
-let supabase: ReturnType<typeof createSupabaseClient> | null = null;
-
-function createSupabaseClient() {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { createClient } = require('@supabase/supabase-js');
-  return createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_KEY!);
-}
+import { getSupabaseServer } from '../../../shared/lib/supabase';
 
 function getSupabase() {
   if (!process.env.SUPABASE_URL) return null;
-  if (!supabase) supabase = createSupabaseClient();
-  return supabase;
+  try {
+    return getSupabaseServer();
+  } catch {
+    return null;
+  }
 }
 
 export class PrerequisiteChecker {

@@ -2,6 +2,8 @@
 // Provides personalized mentoring, study plans, motivation, and deadline management
 
 import type { StudyPlan, WeeklyGoal } from '../../../shared/types';
+import { callLLM } from './openai-client';
+import { getStudentProgress } from '../../../shared/lib/database';
 
 interface ProgressData {
   studentId: string;
@@ -39,13 +41,6 @@ interface ChatMessage {
   content: string;
 }
 
-// Simulates an OpenAI-compatible API call (replace with real client in production)
-async function callLLM(messages: ChatMessage[]): Promise<string> {
-  // Production: replace with actual OpenAI / Azure OpenAI / Ollama call
-  const lastUser = messages.filter((m) => m.role === 'user').pop();
-  return `[Mentor IA response to: "${lastUser?.content ?? ''}"]`;
-}
-
 export class MentorService {
   private systemPrompt: string;
 
@@ -62,24 +57,40 @@ export class MentorService {
    * Analyzes a student's current progress and returns a detailed assessment.
    */
   async analyzeProgress(studentId: string): Promise<ProgressData> {
-    // Production: fetch from database
-    const mockProgress: ProgressData = {
-      studentId,
-      completedCompetencies: 8,
-      totalCompetencies: 40,
-      termProgress: 47,
-      daysRemaining: 112,
-      streak: 7,
-      lastActivity: new Date().toISOString(),
-    };
+    let progress: ProgressData;
+
+    if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY) {
+      // Fetch real data from Supabase
+      const data = await getStudentProgress(studentId);
+      progress = {
+        studentId: data.studentId,
+        completedCompetencies: data.completedCompetencies,
+        totalCompetencies: data.totalCompetencies,
+        termProgress: data.termProgress,
+        daysRemaining: data.daysRemaining,
+        streak: data.streak,
+        lastActivity: data.lastActivity,
+      };
+    } else {
+      // Fallback mock data for development
+      progress = {
+        studentId,
+        completedCompetencies: 8,
+        totalCompetencies: 40,
+        termProgress: 47,
+        daysRemaining: 112,
+        streak: 7,
+        lastActivity: new Date().toISOString(),
+      };
+    }
 
     const messages: ChatMessage[] = [
       { role: 'system', content: this.systemPrompt },
-      { role: 'user', content: `Analyze progress for student ${studentId}: ${JSON.stringify(mockProgress)}. Provide insights.` },
+      { role: 'user', content: `Analyze progress for student ${studentId}: ${JSON.stringify(progress)}. Provide insights.` },
     ];
 
     await callLLM(messages);
-    return mockProgress;
+    return progress;
   }
 
   /**

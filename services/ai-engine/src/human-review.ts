@@ -2,19 +2,15 @@
 // Some assessments require human professor validation after AI evaluation
 
 import type { HumanReviewRequirement } from '../../../shared/types';
-
-let supabase: ReturnType<typeof createSupabaseClient> | null = null;
-
-function createSupabaseClient() {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { createClient } = require('@supabase/supabase-js');
-  return createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_KEY!);
-}
+import { getSupabaseServer } from '../../../shared/lib/supabase';
 
 function getSupabase() {
   if (!process.env.SUPABASE_URL) return null;
-  if (!supabase) supabase = createSupabaseClient();
-  return supabase;
+  try {
+    return getSupabaseServer();
+  } catch {
+    return null;
+  }
 }
 
 // In-memory store used when Supabase is not available (development)
