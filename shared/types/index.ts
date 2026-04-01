@@ -212,6 +212,53 @@ export interface AdmissionDocument {
   uploadedAt: string;
 }
 
+// =============================================
+// MES ANGOLA CURRICULUM COMPLIANCE — New interfaces
+// =============================================
+
+export interface MESCurriculumMapping {
+  id: string;
+  programId: string;
+  mesDiscipline: string;
+  mesCode?: string;
+  mesYear: number;
+  mesSemester: number;
+  mesHours: number;
+  competencyIds: string[];
+  isMandatory: boolean;
+  createdAt: string;
+}
+
+export interface CompetencyPrerequisite {
+  id: string;
+  competencyId: string;
+  prerequisiteId: string;
+}
+
+export interface HumanReviewRequirement {
+  id: string;
+  assessmentId: string;
+  requiresHuman: boolean;
+  reviewerId?: string;
+  reviewStatus?: 'pending' | 'approved' | 'rejected' | 'revision_needed';
+  reviewNotes?: string;
+  reviewedAt?: string;
+  createdAt: string;
+}
+
+export interface PrerequisiteCheckResult {
+  allowed: boolean;
+  missingPrerequisites: string[];
+  message: string;
+}
+
+export interface ComplianceCheckResult {
+  compliant: boolean;
+  completedDisciplines: string[];
+  remainingDisciplines: string[];
+  progressPercentage: number;
+}
+
 export const PROGRAMS: Program[] = [
   { id: '1',  slug: 'bs-engenharia-civil',       name: 'B.S. Engenharia Civil',                     level: 'bachelor',     areaId: '1', description: 'Projecte e construa infraestruturas para o desenvolvimento de Angola.',        durationTerms: 8, competencyCount: 40, pricePerTermAoa: 45000, isPublished: true },
   { id: '2',  slug: 'bs-petroleo-gas',            name: 'B.S. Engenharia de Petróleo & Gás',         level: 'bachelor',     areaId: '2', description: 'Domine as técnicas de exploração e produção petrolífera.',                    durationTerms: 8, competencyCount: 42, pricePerTermAoa: 55000, isPublished: true },
