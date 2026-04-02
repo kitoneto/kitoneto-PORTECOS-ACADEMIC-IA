@@ -100,7 +100,7 @@ O guião deve:
 Título: ${lessonTitle}
 
 Conteúdo:
-${lessonContent.slice(0, 3000)}
+${lessonContent.slice(0, VideoGeneratorService.MAX_SCRIPT_CONTENT_LENGTH)}
 
 Devolve apenas o guião falado, sem formatação extra.`,
       },
@@ -233,20 +233,30 @@ Devolve apenas o guião falado, sem formatação extra.`,
       throw new Error('[VideoGenerator] Invalid video URL');
     }
 
-    const ALLOWED_HOSTS = ['files.heygen.ai', 'api.heygen.com', 'create-images-results.d-id.com', 'd-id.com'];
-    const isAllowed = ALLOWED_HOSTS.some(
-      (host) => parsedUrl.hostname === host || parsedUrl.hostname.endsWith(`.${host}`)
-    );
-    if (!isAllowed) {
+    if (parsedUrl.protocol !== 'https:') {
+      throw new Error('[VideoGenerator] Video URL must use HTTPS');
+    }
+
+    const ALLOWED_HOSTS = new Set([
+      'files.heygen.ai',
+      'api.heygen.com',
+      'create-images-results.d-id.com',
+      'api.d-id.com',
+      'talks-public-s3.d-id.com',
+    ]);
+    if (!ALLOWED_HOSTS.has(parsedUrl.hostname)) {
       throw new Error(`[VideoGenerator] Video URL host '${parsedUrl.hostname}' is not a trusted provider`);
     }
+
+    // Use the parsed (validated) URL string to prevent any manipulation from the original input.
+    const safeUrl = parsedUrl.toString();
 
     try {
       const { getSupabaseServer } = await import('../../../shared/lib/supabase');
       const supabase = getSupabaseServer();
 
-      // Download the video from the provider
-      const videoResponse = await fetch(videoUrl);
+      // Download the video from the trusted provider; disable redirects to prevent redirect attacks.
+      const videoResponse = await fetch(safeUrl, { redirect: 'error' });
       if (!videoResponse.ok) {
         throw new Error(`Failed to download video: ${videoResponse.status}`);
       }
@@ -276,6 +286,9 @@ Devolve apenas o guião falado, sem formatação extra.`,
 
   // ── Private helpers ────────────────────────────────────────────────────────
 
+// Maximum characters of lesson content to include in a video script prompt.
+  // Limits token usage and keeps the spoken script to a reasonable duration (~8 min).
+  private static readonly MAX_SCRIPT_CONTENT_LENGTH = 3000;
   private static readonly POLL_MAX_ATTEMPTS = 60; // 10 minutes at 10s intervals
   private static readonly POLL_INTERVAL_MS = 10_000;
 
