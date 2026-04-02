@@ -259,6 +259,41 @@ export interface ComplianceCheckResult {
   progressPercentage: number;
 }
 
+// =============================================
+// AUTONOMOUS CONTENT GENERATION — New interfaces
+// =============================================
+
+export interface GeneratedLesson {
+  title: string;
+  order: number;
+  type: 'concept' | 'problem' | 'quiz' | 'video';
+  content: string;
+  question?: string;
+  options?: string[];
+  correctAnswer?: number;
+  explanation?: string;
+  xpReward: number;
+  videoUrl?: string;
+}
+
+export interface ContentGenerationStatus {
+  competencyId: string;
+  status: 'pending' | 'generating_lessons' | 'generating_videos' | 'completed' | 'failed';
+  lessonsGenerated: number;
+  videosGenerated: number;
+  error?: string;
+  startedAt: string;
+  completedAt?: string;
+}
+
+export interface VideoGenerationResult {
+  lessonId: string;
+  videoUrl: string;
+  duration: number;
+  provider: 'heygen' | 'd-id' | 'mock';
+  generatedAt: string;
+}
+
 export const PROGRAMS: Program[] = [
   { id: '1',  slug: 'bs-engenharia-civil',       name: 'B.S. Engenharia Civil',                     level: 'bachelor',     areaId: '1', description: 'Projecte e construa infraestruturas para o desenvolvimento de Angola.',        durationTerms: 8, competencyCount: 40, pricePerTermAoa: 45000, isPublished: true },
   { id: '2',  slug: 'bs-petroleo-gas',            name: 'B.S. Engenharia de Petróleo & Gás',         level: 'bachelor',     areaId: '2', description: 'Domine as técnicas de exploração e produção petrolífera.',                    durationTerms: 8, competencyCount: 42, pricePerTermAoa: 55000, isPublished: true },

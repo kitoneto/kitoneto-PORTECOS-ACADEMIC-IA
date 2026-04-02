@@ -3,6 +3,9 @@ import dotenv from 'dotenv';
 import { askTutor } from './tutor';
 import { evaluateAnswer } from './evaluator';
 import { getRecommendations } from './recommender';
+import { lessonGenerator } from './lesson-generator';
+import { videoGenerator } from './video-generator';
+import { contentPipeline } from './content-pipeline';
 
 dotenv.config();
 
@@ -53,6 +56,43 @@ app.get('/api/ai/recommend/:userId', async (req, res) => {
     res.json({ data: recommendations });
   } catch {
     res.status(500).json({ error: 'Erro nas recomendações IA' });
+  }
+});
+
+// Lesson generation endpoint
+app.post('/api/ai/generate-lessons', async (req, res) => {
+  try {
+    const { competencyId, title, description, areaSlug } = req.body;
+    const lessons = await lessonGenerator.generateLessonsForCompetency(
+      competencyId, title, description, areaSlug
+    );
+    res.json({ data: lessons });
+  } catch (error) {
+    res.status(500).json({ error: 'Erro na geração de lições' });
+  }
+});
+
+// Video generation endpoint
+app.post('/api/ai/generate-video', async (req, res) => {
+  try {
+    const { lesson } = req.body;
+    const result = await videoGenerator.generateVideoForLesson(lesson);
+    res.json({ data: result });
+  } catch (error) {
+    res.status(500).json({ error: 'Erro na geração de vídeo' });
+  }
+});
+
+// Full content pipeline endpoint
+app.post('/api/ai/generate-course-content', async (req, res) => {
+  try {
+    const { competencyId, title, description, areaSlug, courseId } = req.body;
+    const result = await contentPipeline.generateFullCourseContent(
+      competencyId, title, description, areaSlug, courseId
+    );
+    res.json({ data: result });
+  } catch (error) {
+    res.status(500).json({ error: 'Erro no pipeline de conteúdo' });
   }
 });
 
