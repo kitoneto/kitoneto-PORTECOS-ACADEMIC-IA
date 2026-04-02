@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const { HumanReviewService } = await import(
-      '../../../../services/ai-engine/src/human-review'
+      '@services/ai-engine/src/human-review'
     );
     const service = new HumanReviewService();
     const reviews = await service.getPendingReviews(reviewerId);
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
     }
 
     const { HumanReviewService } = await import(
-      '../../../../services/ai-engine/src/human-review'
+      '@services/ai-engine/src/human-review'
     );
     const service = new HumanReviewService();
     const result = await service.processReview(reviewId, reviewerId, decision, notes ?? '');

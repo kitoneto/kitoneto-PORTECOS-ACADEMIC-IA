@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const { MESComplianceService } = await import(
-      '../../../../../services/ai-engine/src/mes-compliance'
+      '@services/ai-engine/src/mes-compliance'
     );
     const service = new MESComplianceService();
 
