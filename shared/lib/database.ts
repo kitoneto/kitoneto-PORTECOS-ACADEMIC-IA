@@ -129,3 +129,56 @@ export async function getPrograms(filters?: { level?: string; areaId?: string })
   const { data, error } = await query;
   return { data, error };
 }
+
+// Save generated lessons to the database
+export async function saveLessons(courseId: string, lessons: Array<{
+  title: string;
+  order: number;
+  type: string;
+  content: string;
+  question?: string;
+  options?: string[];
+  correctAnswer?: number;
+  explanation?: string;
+  xpReward: number;
+}>) {
+  const supabase = getSupabaseServer();
+  const rows = lessons.map((lesson) => ({
+    course_id: courseId,
+    title: lesson.title,
+    order: lesson.order,
+    type: lesson.type,
+    content: lesson.content,
+    question: lesson.question ?? null,
+    options: lesson.options ? JSON.stringify(lesson.options) : null,
+    correct_answer: lesson.correctAnswer ?? null,
+    explanation: lesson.explanation ?? null,
+    xp_reward: lesson.xpReward,
+  }));
+
+  const { data, error } = await supabase
+    .from('lessons')
+    .insert(rows)
+    .select();
+
+  if (error) {
+    console.error('[PORTECOS] Error saving lessons:', error.message);
+  }
+  return { data, error };
+}
+
+// Update a lesson's video URL after video generation
+export async function updateLessonVideoUrl(lessonId: string, videoUrl: string) {
+  const supabase = getSupabaseServer();
+  const { data, error } = await supabase
+    .from('lessons')
+    .update({ video_url: videoUrl })
+    .eq('id', lessonId)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('[PORTECOS] Error updating lesson video URL:', error.message);
+  }
+  return { data, error };
+}
